@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Słoik">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Dziennik słoika</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&display=swap">
+</head>
+<body>
+<style>
+/* Layout: one-column phone app (max 520px), amber apothecary jar as hero, fixed bottom tab bar */
+:root{
+  --bg:#ECEFE6; --surface:#F8F9F4; --surface-2:#E2E7DA; --ink:#17211B; --muted:#5A675D; --line:#D0D7C7;
+  --leaf:#3C6A47; --amber:#9E5E16; --amber-ink:#FFF8EC; --rust:#AE4129;
+  --glass:#C4862C; --glass-tint:rgba(196,134,44,.10); --lid:#26302A; --shine:rgba(255,255,255,.45);
+  --label:#FCFBF6; --label-ink:#232A25; --toast-accent:#E2A24B;
+  --herb-0:#4E7A4F; --herb-1:#3A5F3D; --herb-2:#6F9561; --herb-3:#D8B15A;
+  --l1:color-mix(in srgb, var(--leaf) 18%, var(--surface));
+  --l2:color-mix(in srgb, var(--leaf) 38%, var(--surface));
+  --l3:color-mix(in srgb, var(--leaf) 66%, var(--surface));
+  --over:color-mix(in srgb, var(--rust) 70%, var(--surface));
+  --font-display:"Bricolage Grotesque", ui-rounded, -apple-system, system-ui, sans-serif;
+  --font-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono:"DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1512; --surface:#171F1A; --surface-2:#212B24; --ink:#E5EADF; --muted:#94A095; --line:#2A352D;
+    --leaf:#7AA97F; --amber:#E2A24B; --amber-ink:#1A1206; --rust:#E27A5E;
+    --glass:#D99A44; --glass-tint:rgba(217,154,68,.10); --lid:#3A453D; --shine:rgba(255,255,255,.22);
+    --label:#ECE8DC; --label-ink:#1E241F; --toast-accent:#8A520F;
+    --herb-0:#557F57; --herb-1:#3E6342; --herb-2:#80A774; --herb-3:#E6C06A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1512; --surface:#171F1A; --surface-2:#212B24; --ink:#E5EADF; --muted:#94A095; --line:#2A352D;
+  --leaf:#7AA97F; --amber:#E2A24B; --amber-ink:#1A1206; --rust:#E27A5E;
+  --glass:#D99A44; --glass-tint:rgba(217,154,68,.10); --lid:#3A453D; --shine:rgba(255,255,255,.22);
+  --label:#ECE8DC; --label-ink:#1E241F; --toast-accent:#8A520F;
+  --herb-0:#557F57; --herb-1:#3E6342; --herb-2:#80A774; --herb-3:#E6C06A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:15px; line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color:transparent;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:8px}
+.app{max-width:520px;margin:0 auto;padding-block:14px calc(96px + env(safe-area-inset-bottom, 0px))}
+.view{display:flex;flex-direction:column;gap:16px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.eyebrow{margin:0;color:var(--muted);font-size:13px}
+h1{margin:0;font-family:var(--font-display);font-weight:750;font-size:34px;line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+h2{margin:0;font-family:var(--font-display);font-weight:650;font-size:18px;letter-spacing:-.01em}
+.label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.sub{color:var(--muted);font-size:13px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.pill{font-family:var(--font-mono);font-size:12.5px;padding:7px 11px;border-radius:999px;background:var(--surface-2);color:var(--ink);white-space:nowrap}
+
+/* hero */
+.hero{display:grid;grid-template-columns:118px minmax(0,1fr);gap:18px;align-items:center}
+.jar{width:100%;height:auto;display:block;overflow:visible}
+.jar-back{fill:var(--glass-tint)}
+.jar-glass{fill:none;stroke:var(--glass);stroke-width:3}
+.jar-shine{fill:var(--shine)}
+.jar-neck{fill:var(--glass);opacity:.55}
+.jar-lid{fill:var(--lid)}
+.jar-lid-line{stroke:var(--shine);stroke-width:1.2}
+.jar-label rect{fill:var(--label)}
+.lb-big{font:500 12px var(--font-mono);fill:var(--label-ink)}
+.lb-small{font:400 6.6px var(--font-mono);fill:var(--label-ink);opacity:.72}
+.h0{fill:var(--herb-0)} .h1{fill:var(--herb-1)} .h2{fill:var(--herb-2)} .h3{fill:var(--herb-3)}
+.jar-fill{transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+.hero-stats{display:flex;flex-direction:column;gap:14px;min-width:0}
+.big{font-family:var(--font-display);font-weight:720;font-size:40px;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;display:block;margin-top:4px}
+.big small{font-size:18px;font-weight:600;letter-spacing:0;margin-left:2px;color:var(--muted)}
+.big.over{color:var(--rust)}
+.meter{position:relative;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:8px 0 6px}
+.meter span{position:absolute;inset:0 auto 0 0;width:0;border-radius:99px;background:var(--leaf);transition:width .5s ease}
+.meter span.over{background:var(--rust)}
+.formula{margin:0;font-family:var(--font-mono);font-size:12.5px;color:var(--muted);background:var(--surface-2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.formula b{color:var(--ink);font-weight:500}
+
+.notice{background:var(--surface);border:1px dashed var(--glass);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.notice .row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* add card */
+.add-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.when{font-size:13px;color:var(--amber);font-weight:600;padding:6px 2px}
+.when-edit{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field input,.field select,.inp{width:100%;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:16px}
+.amount{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:8px}
+.step{height:52px;border-radius:14px;background:var(--surface-2);font-size:26px;font-weight:500;line-height:1;display:grid;place-items:center}
+.step:active{transform:scale(.96)}
+.amount-box{display:flex;align-items:baseline;justify-content:center;gap:4px}
+.amount-box input{width:4.2ch;text-align:right;background:transparent;border:0;font-family:var(--font-display);font-weight:720;font-size:46px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;padding:0}
+.amount-box span{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--muted)}
+.presets{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.preset{font-family:var(--font-mono);font-size:13px;padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.preset[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.forms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.form-chip{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 9px;border-radius:13px;border:1px solid var(--line);background:var(--bg);font-size:13px;font-weight:600}
+.form-chip[aria-pressed="true"]{border-color:var(--amber);background:color-mix(in srgb, var(--amber) 13%, var(--bg));color:var(--ink)}
+.form-chip[aria-pressed="true"] .ic{color:var(--amber)}
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.cta{background:var(--amber);color:var(--amber-ink);border-radius:14px;padding:15px 16px;font-weight:700;font-size:17px;width:100%}
+.cta:active{transform:scale(.985)}
+.cta.confirm{background:var(--rust)}
+.ghost{border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-weight:600;font-size:14px;background:var(--bg)}
+.ghost.small{padding:7px 12px;font-size:13px}
+
+/* entries */
+.entries{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.entries li{display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.entries li:last-child{border-bottom:0}
+.entries .ic{width:22px;height:22px;color:var(--muted)}
+.entries .nm{font-weight:600;min-width:0}
+.entries .tm{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin-left:6px;font-weight:400}
+.entries .am{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:14px}
+.del{width:32px;height:32px;border-radius:9px;color:var(--muted);display:grid;place-items:center;font-size:20px;line-height:1}
+.del:hover{background:var(--surface-2)}
+.empty{color:var(--muted);font-size:14px;padding:6px 0;margin:0}
+.list-head{display:flex;justify-content:space-between;align-items:baseline}
+
+/* calendar */
+.cal-nav{display:flex;gap:6px}
+.icon-btn{width:40px;height:40px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:20px}
+.dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.dow span{text-align:center;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.day{aspect-ratio:1/1.08;max-width:100%;border-radius:11px;background:var(--bg);border:1px solid transparent;display:flex;flex-direction:column;justify-content:space-between;padding:5px 5px 4px;text-align:left;min-width:0}
+.day .n{font-size:13px;font-weight:600;line-height:1}
+.day .v{font-family:var(--font-mono);font-size:10px;line-height:1;align-self:flex-end;font-variant-numeric:tabular-nums}
+.day.out .n{color:var(--muted);font-weight:500}
+.day.future{opacity:.45}
+.day.l1{background:var(--l1)} .day.l2{background:var(--l2)} .day.l3{background:var(--l3);color:var(--bg)}
+.day.over{background:var(--over);color:var(--bg)}
+.day.in{box-shadow:inset 0 -2px 0 color-mix(in srgb, var(--glass) 55%, transparent)}
+.day.today{border-color:var(--ink)}
+.day[aria-pressed="true"]{outline:2px solid var(--amber);outline-offset:1px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);align-items:center}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-2px;margin-right:5px}
+.dd-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.dd-head h2::first-letter{text-transform:uppercase}
+
+/* stats */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .v{font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:14px;color:var(--muted);font-weight:600}
+.forecast{margin:0;font-size:14.5px;line-height:1.5}
+.chart{width:100%;height:auto;display:block}
+.chart .bar{fill:var(--leaf)} .chart .bar.over{fill:var(--rust)} .chart .bar.zero{fill:var(--line)}
+.chart .base{stroke:var(--amber);stroke-width:1.2;stroke-dasharray:4 3}
+.chart .grid-l{stroke:var(--line);stroke-width:1}
+.chart text{font-family:var(--font-mono);font-size:9px;fill:var(--muted)}
+.chart text.t-today{fill:var(--ink);font-weight:500}
+.chart text.t-base{fill:var(--amber)}
+.chart text.t-val{fill:var(--ink);font-size:8px}
+.forms-stat{display:flex;flex-direction:column;gap:12px}
+.fs-row{display:grid;grid-template-columns:24px 64px minmax(0,1fr) auto;gap:10px;align-items:center}
+.fs-row .ic{width:20px;height:20px;color:var(--muted)}
+.fs-row .nm{font-weight:600;font-size:14px}
+.fs-bar{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.fs-bar span{display:block;height:100%;background:var(--glass);border-radius:99px}
+.fs-row .am{font-family:var(--font-mono);font-size:12.5px;text-align:right;white-space:nowrap}
+
+/* settings */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.form-grid .wide{grid-column:1/-1}
+.check{display:flex;gap:10px;align-items:center;font-size:14px}
+.check input{width:20px;height:20px;accent-color:var(--amber)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+textarea.inp{min-height:120px;font-family:var(--font-mono);font-size:12px;resize:vertical}
+.store-line{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);margin-top:6px;flex:none}
+.dot.cloud{background:var(--leaf)}
+p{margin:0}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb, var(--bg) 90%, transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom, 0px);padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;color:var(--muted);font-size:11px;font-weight:600}
+.tab[aria-current="page"]{color:var(--ink)}
+.tab[aria-current="page"] .ic{color:var(--amber)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom, 0px));transform:translate(-50%, 12px);opacity:0;transition:opacity .2s, transform .2s;z-index:30;background:var(--ink);color:var(--bg);border-radius:14px;padding:11px 12px 11px 16px;display:flex;align-items:center;gap:14px;font-size:14px;width:min(480px, calc(100% - 32px));box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.toast.show{opacity:1;transform:translate(-50%, 0)}
+.toast span{flex:1;min-width:0}
+.toast button{color:var(--toast-accent);font-weight:700;padding:4px 6px}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+@media (max-width:360px){ .hero{grid-template-columns:96px minmax(0,1fr);gap:12px} .big{font-size:34px} }
+</style>
+
+<div class="app">
+  <!-- DZIŚ -->
+  <section id="view-today" class="view" aria-label="Dziś">
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="todayDate">dziś</p>
+        <h1>Słoik</h1>
+      </div>
+      <button class="pill" id="periodPill" data-go="jar" aria-label="Zmień okres przydziału">—</button>
+    </div>
+
+    <div class="hero">
+      <svg class="jar" id="jar" viewBox="0 0 120 170" role="img" aria-label="Słoik"></svg>
+      <div class="hero-stats">
+        <div>
+          <span class="label">Zostało w słoiku</span>
+          <span class="big"><span id="remain">0,00</span><small>g</small></span>
+          <span class="sub" id="remainSub"></span>
+        </div>
+        <div>
+          <span class="label" id="todayLabel">Na dziś zostało</span>
+          <span class="big" id="todayBig"><span id="todayLeft">0,00</span><small>g</small></span>
+          <div class="meter" aria-hidden="true"><span id="meterFill"></span></div>
+          <span class="sub" id="todaySub"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="formula" id="formula"></p>
+
+    <div class="notice" id="setupNotice" hidden>
+      <p id="setupText"></p>
+      <div class="row">
+        <button class="ghost small" data-go="jar">Zmień przydział</button>
+        <button class="ghost small" id="setupOk">Pasuje</button>
+      </div>
+    </div>
+
+    <div class="notice" id="periodNotice" hidden>
+      <p id="periodText"></p>
+      <div class="row"><button class="ghost small" data-go="jar">Nowy słoik</button></div>
+    </div>
+
+    <section class="card" id="addCard">
+      <div class="add-top">
+        <h2>Wyjmij ze słoika</h2>
+        <button class="when" id="whenBtn" aria-expanded="false">Teraz</button>
+      </div>
+      <div class="when-edit" id="whenEdit" hidden>
+        <label class="field"><span class="label">Dzień</span><input type="date" id="whenDate"></label>
+        <label class="field"><span class="label">Godzina</span><input type="time" id="whenTime"></label>
+        <button class="ghost" id="whenNow">Teraz</button>
+      </div>
+      <div class="amount">
+        <button class="step" id="minus" aria-label="Mniej o 0,05 g">−</button>
+        <div class="amount-box"><input id="amountIn" inputmode="decimal" autocomplete="off" aria-label="Ilość w gramach" value="0,20"><span>g</span></div>
+        <button class="step" id="plus" aria-label="Więcej o 0,05 g">+</button>
+      </div>
+      <div class="presets" id="presets"></div>
+      <div class="forms" id="forms" role="group" aria-label="Forma"></div>
+      <button class="cta" id="saveBtn">Zapisz</button>
+    </section>
+
+    <section class="card">
+      <div class="list-head"><h2>Dzisiaj</h2><span class="mono sub" id="todaySum"></span></div>
+      <ul class="entries" id="todayList"></ul>
+    </section>
+  </section>
+
+  <!-- KALENDARZ -->
+  <section id="view-cal" class="view" aria-label="Kalendarz" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">Kalendarz</p>
+        <h1 id="calTitle">—</h1>
+      </div>
+      <div class="cal-nav">
+        <button class="icon-btn" id="calPrev" aria-label="Poprzedni miesiąc">‹</button>
+        <button class="icon-btn" id="calNext" aria-label="Następny miesiąc">›</button>
+      </div>
+    </div>
+    <section class="card">
+      <div class="dow" aria-hidden="true"><span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>So</span><span>Nd</span></div>
+      <div class="grid" id="calGrid"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card" id="dayDetail">
+      <div class="dd-head"><h2 id="ddTitle">—</h2><span class="mono" id="ddSum"></span></div>
+      <p class="sub" id="ddInfo"></p>
+      <ul class="entries" id="ddList"></ul>
+      <button class="ghost" id="ddAdd">Dodaj wpis z tego dnia</button>
+    </section>
+  </section>
+
+  <!-- STATYSTYKI -->
+  <section id="view-stats" class="view" aria-label="Statystyki" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="statsPeriod">Ten okres</p>
+        <h1>Statystyki</h1>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><span class="label">Zużyte</span><span class="v" id="kUsed"></span><span class="sub" id="kUsedSub"></span></div>
+      <div class="kpi"><span class="label">Średnio na dzień</span><span class="v" id="kAvg"></span><span class="sub" id="kAvgSub"></span></div>
+      <div class="kpi"><span class="label">Norma na dzień</span><span class="v" id="kBase"></span><span class="sub" id="kBaseSub"></span></div>
+      <div class="kpi"><span class="label">Starczy do</span><span class="v" id="kUntil"></span><span class="sub" id="kUntilSub"></span></div>
+    </div>
+    <p class="forecast" id="forecast"></p>
+    <section class="card">
+      <div class="list-head"><h2>Ostatnie 14 dni</h2><span class="sub">przerywana linia to norma</span></div>
+      <div id="chart14"></div>
+    </section>
+    <section class="card">
+      <h2>W jakiej formie</h2>
+      <div class="forms-stat" id="byForm"></div>
+    </section>
+  </section>
+
+  <!-- PRZYDZIAŁ -->
+  <section id="view-jar" class="view" aria-label="Przydział" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">Ustawienia</p>
+        <h1>Przydział</h1>
+      </div>
+    </div>
+    <section class="card">
+      <h2>Obecny słoik</h2>
+      <div class="form-grid">
+        <label class="field wide"><span class="label">Ile na cały okres (g)</span><input class="inp" id="sTotal" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span class="label">Od</span><input class="inp" type="date" id="sStart"></label>
+        <label class="field"><span class="label">Do</span><input class="inp" type="date" id="sEnd"></label>
+      </div>
+      <p class="sub mono" id="sInfo"></p>
+    </section>
+    <section class="card">
+      <h2>Nowy słoik</h2>
+      <p class="sub">Zaczyna nowy okres od dziś na miesiąc. Wpisy z kalendarza zostają.</p>
+      <label class="field"><span class="label">Ile dostałeś (g)</span><input class="inp" id="nTotal" inputmode="decimal" autocomplete="off" value="20"></label>
+      <label class="check"><input type="checkbox" id="nCarry"><span id="nCarryLabel">Dolicz resztę ze starego słoika</span></label>
+      <button class="cta" id="newJarBtn">Zacznij nowy słoik</button>
+    </section>
+    <section class="card">
+      <h2>Szybkie dodawanie</h2>
+      <div class="form-grid">
+        <label class="field"><span class="label">Domyślna porcja (g)</span><input class="inp" id="sDefAmount" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span class="label">Domyślna forma</span><select class="inp" id="sDefForm"></select></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Twoje dane</h2>
+      <div class="store-line"><span class="dot" id="storeDot"></span><span id="storeText">Zapis w tej przeglądarce.</span></div>
+      <div class="btn-row">
+        <button class="ghost" id="exportBtn">Kopiuj kopię zapasową</button>
+        <button class="ghost" id="importToggle" aria-expanded="false">Wklej kopię</button>
+      </div>
+      <textarea class="inp" id="ioText" hidden aria-label="Kopia zapasowa"></textarea>
+      <button class="ghost" id="importBtn" hidden>Wczytaj wklejoną kopię</button>
+    </section>
+  </section>
+</div>
+
+<nav class="tabs" aria-label="Sekcje">
+  <div class="tabs-in">
+    <button class="tab" data-tab="today" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2.8h8v3.4H8z"/><path d="M7.2 6.2h9.6a2.4 2.4 0 0 1 2.4 2.4v10.2a2.4 2.4 0 0 1-2.4 2.4H7.2a2.4 2.4 0 0 1-2.4-2.4V8.6a2.4 2.4 0 0 1 2.4-2.4z"/><path d="M4.8 14.2h14.4"/></svg>Dziś</button>
+    <button class="tab" data-tab="cal"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.4"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Kalendarz</button>
+    <button class="tab" data-tab="stats"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg>Statystyki</button>
+    <button class="tab" data-tab="jar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M18 7h2M4 17h3M11 17h9"/><circle cx="15.5" cy="7" r="2.3"/><circle cx="9" cy="17" r="2.3"/></svg>Przydział</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast" hidden role="status"><span id="toastMsg"></span><button id="toastUndo" hidden>Cofnij</button></div>
+
+<script>
+(function(){
+"use strict";
+var FORMS = [
+  {id:"gibon", name:"Gibon"},
+  {id:"vape", name:"Vape"},
+  {id:"joint", name:"Joint"},
+  {id:"lufka", name:"Lufka"},
+  {id:"jadalne", name:"Jadalne"},
+  {id:"inne", name:"Inne"}
+];
+var ICONS = {
+  gibon:'<path d="M9 2.8h5.2"/><path d="M10.1 2.8v10.1a4.6 4.6 0 1 0 3 0V2.8"/><path d="M14.4 16.2l3.9-3.4"/><path d="M16.8 11.4l2.8 2.6"/>',
+  vape:'<path d="M10 7.5h4v13a1.2 1.2 0 0 1-1.2 1.2h-1.6A1.2 1.2 0 0 1 10 20.5z"/><path d="M11 3h2v4.5h-2z"/><path d="M12 17.2v.6"/><path d="M16.5 3.5c1 1 1 2 0 3"/>',
+  joint:'<path d="M4 18.6 15.4 7.2l2.6 2.6L6.6 21.2z"/><path d="M18.4 6.4c1-1 .8-2.2-.2-3"/>',
+  lufka:'<path d="M3 12.6h10.5"/><path d="M13.5 9h6.5v3.6a3.3 3.3 0 0 1-3.3 3.3 3.3 3.3 0 0 1-3.2-3.3z"/>',
+  jadalne:'<circle cx="12" cy="12" r="8.2"/><path d="M9 9.6h.01M14.2 8.8h.01M13.4 14.2h.01M9.4 15h.01M16 12h.01" stroke-width="2.4"/>',
+  inne:'<path d="M6.5 12h.01M12 12h.01M17.5 12h.01" stroke-width="2.6"/>'
+};
+var LS_KEY = "sloik.dziennik.v1";
+var PRESETS = [0.1, 0.15, 0.2, 0.3, 0.5];
+var STEP = 0.05;
+
+var $ = function(s){ return document.querySelector(s); };
+var nf = new Intl.NumberFormat("pl-PL", {minimumFractionDigits:2, maximumFractionDigits:2});
+function g(v){ v = Math.round((+v||0)*100)/100; if (Math.abs(v) < 0.005) v = 0; return nf.format(v); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function parseNum(v){ var n = parseFloat(String(v).replace(",", ".").replace(/[^0-9.\-]/g, "")); return isFinite(n) ? n : NaN; }
+function gt(v){ return g(v).replace(/,?0+$/, "").replace(/,$/, "") || "0"; }
+function r3(v){ return Math.round(v*1000)/1000; }
+function dni(n){ return n === 1 ? "dzień" : "dni"; }
+
+/* ---------- daty ---------- */
+function pad(n){ return String(n).padStart(2, "0"); }
+function keyOf(d){ return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); }
+function parseKey(k){ var p = k.split("-").map(Number); return new Date(p[0], p[1]-1, p[2]); }
+function dayNum(k){ var p = k.split("-").map(Number); return Date.UTC(p[0], p[1]-1, p[2]) / 864e5; }
+function diff(a, b){ return dayNum(a) - dayNum(b); }
+function addDays(k, n){ var d = parseKey(k); d.setDate(d.getDate()+n); return keyOf(d); }
+function todayKey(){ return keyOf(new Date()); }
+function nowHM(){ var d = new Date(); return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+function monthEnd(k){
+  var p = k.split("-").map(Number), y = p[0], m = p[1], d = p[2];
+  var dimNext = new Date(y, m+1, 0).getDate();
+  if (d > dimNext) return keyOf(new Date(y, m, dimNext));
+  var t = new Date(y, m, d); t.setDate(t.getDate()-1); return keyOf(t);
+}
+function short(k){ var p = k.split("-"); return p[2] + "." + p[1]; }
+var fmtLong = new Intl.DateTimeFormat("pl-PL", {weekday:"long", day:"numeric", month:"long"});
+var fmtMonth = new Intl.DateTimeFormat("pl-PL", {month:"long", year:"numeric"});
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+function isKey(k){ return typeof k === "string" && /^\d{4}-\d{2}-\d{2}$/.test(k); }
+
+/* ---------- stan ---------- */
+function defaults(){
+  var t = todayKey();
+  return {settings:{total:20, start:t, end:monthEnd(t), defAmount:0.2, defForm:"gibon", setupSeen:false}, entries:{}};
+}
+function cleanEntry(e, id){
+  if (!e || typeof e !== "object") return null;
+  var amount = +e.amount;
+  if (!isFinite(amount) || amount <= 0 || !isKey(e.date)) return null;
+  var form = FORMS.some(function(f){ return f.id === e.form; }) ? e.form : "inne";
+  var time = /^\d{2}:\d{2}$/.test(e.time) ? e.time : "12:00";
+  return {id:String(id || e.id), date:e.date, time:time, amount:r3(amount), form:form, ts:+e.ts || 0};
+}
+function cleanSettings(s, base){
+  var o = Object.assign({}, base || defaults().settings);
+  if (s && typeof s === "object"){
+    if (isFinite(+s.total) && +s.total >= 0) o.total = r3(+s.total);
+    if (isKey(s.start)) o.start = s.start;
+    if (isKey(s.end)) o.end = s.end;
+    if (isFinite(+s.defAmount) && +s.defAmount > 0) o.defAmount = r3(+s.defAmount);
+    if (FORMS.some(function(f){ return f.id === s.defForm; })) o.defForm = s.defForm;
+    if (typeof s.setupSeen === "boolean") o.setupSeen = s.setupSeen;
+  }
+  if (o.end < o.start) o.end = o.start;
+  return o;
+}
+function loadLocal(){
+  try {
+    var raw = localStorage.getItem(LS_KEY); if (!raw) return null;
+    var o = JSON.parse(raw); if (!o || !o.settings) return null;
+    var st = {settings:cleanSettings(o.settings), entries:{}};
+    Object.keys(o.entries || {}).forEach(function(id){ var e = cleanEntry(o.entries[id], id); if (e) st.entries[id] = e; });
+    return st;
+  } catch(err){ return null; }
+}
+function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify({settings:state.settings, entries:state.entries})); } catch(err){} }
+
+var state = loadLocal() || defaults();
+var S = {mode:"local", profileRef:null, entriesCol:null};
+var settingsChain = Promise.resolve();
+var settingsTimer = null;
+
+function newId(){ return "e-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
+
+function addEntry(e, quiet){
+  state.entries[e.id] = e; saveLocal(); render();
+  if (S.mode === "cloud"){
+    S.entriesCol.doc(e.id).set(e).catch(function(){ toast("Nie udało się zapisać na koncie. Wpis został w tej przeglądarce."); });
+  }
+}
+function removeEntry(id){
+  var e = state.entries[id]; if (!e) return null;
+  delete state.entries[id]; saveLocal(); render();
+  if (S.mode === "cloud"){ S.entriesCol.doc(id).delete().catch(function(){}); }
+  return e;
+}
+function saveSettings(){
+  state.settings = cleanSettings(state.settings, state.settings);
+  saveLocal(); render();
+  if (S.mode === "cloud"){
+    clearTimeout(settingsTimer);
+    settingsTimer = setTimeout(function(){
+      var body = {settings:Object.assign({}, state.settings), v:1};
+      settingsChain = settingsChain.then(function(){ return S.profileRef.set(body); }).catch(function(){});
+    }, 500);
+  }
+}
+
+/* ---------- synchronizacja z kontem (gdy strona działa w Claude) ---------- */
+function initCloud(){
+  if (!window.claude || typeof window.claude.use !== "function") return;
+  Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function(res){
+    var db = res[0], user = res[1];
+    if (!db || !user) return;
+    return user.id().then(function(uid){
+      if (!uid) return;
+      var profileRef = db.doc("data/users/" + uid + "/profile");
+      var entriesCol = profileRef.collection("entries");
+      return profileRef.get().then(function(snap){
+        if (snap.exists) return true;
+        // pierwsze uruchomienie na koncie: przenieś to, co jest w przeglądarce
+        var list = Object.keys(state.entries).map(function(k){ return state.entries[k]; });
+        var p = profileRef.set({settings:Object.assign({}, state.settings), v:1});
+        list.forEach(function(e){ p = p.then(function(){ return entriesCol.doc(e.id).set(e); }); });
+        return p.then(function(){ return true; });
+      }).then(function(ok){
+        if (!ok) return;
+        S.mode = "cloud"; S.profileRef = profileRef; S.entriesCol = entriesCol;
+        profileRef.onSnapshot(function(s){
+          if (!s.exists) return;
+          var d = s.data();
+          if (d && d.settings){ state.settings = cleanSettings(d.settings, state.settings); saveLocal(); render(); }
+        }, function(){});
+        entriesCol.onSnapshot(function(q){
+          if (q.empty && q.metadata && q.metadata.fromCache && Object.keys(state.entries).length) return;
+          var m = {};
+          q.docs.forEach(function(d){ var e = cleanEntry(d.data(), d.id); if (e) m[d.id] = e; });
+          state.entries = m; saveLocal(); render();
+        }, function(){});
+        render();
+      });
+    });
+  }).catch(function(){ /* zostaje zapis w przeglądarce */ });
+}
+
+/* ---------- obliczenia ---------- */
+function calc(){
+  var s = state.settings, t = todayKey();
+  var total = +s.total || 0;
+  var periodDays = Math.max(1, diff(s.end, s.start) + 1);
+  var byDay = {}, byForm = {}, usedPeriod = 0;
+  Object.keys(state.entries).forEach(function(id){
+    var e = state.entries[id];
+    byDay[e.date] = (byDay[e.date] || 0) + e.amount;
+    if (e.date >= s.start && e.date <= s.end){
+      usedPeriod += e.amount;
+      byForm[e.form] = (byForm[e.form] || 0) + e.amount;
+    }
+  });
+  var remaining = total - usedPeriod;
+  var usedToday = byDay[t] || 0;
+  var status = t < s.start ? "before" : (t > s.end ? "after" : "during");
+  var baseline = total / periodDays;
+  var daysLeft = 0, suggested = 0, startRemain = remaining, tomorrow = null;
+  if (status === "during"){
+    daysLeft = diff(s.end, t) + 1;
+    startRemain = remaining + usedToday;
+    suggested = Math.max(0, startRemain) / daysLeft;
+    if (daysLeft > 1) tomorrow = Math.max(0, remaining) / (daysLeft - 1);
+  } else if (status === "before"){
+    daysLeft = periodDays;
+  }
+  var daysElapsed = status === "during" ? diff(t, s.start) + 1 : (status === "after" ? periodDays : 0);
+  var avg = daysElapsed ? usedPeriod / daysElapsed : 0;
+  var emptyDate = null, leftoverEnd = null;
+  if (status === "during"){
+    if (remaining <= 0.0005) emptyDate = t;
+    else if (avg > 0) emptyDate = addDays(t, Math.floor(remaining / avg));
+    leftoverEnd = remaining - avg * (daysLeft - 1);
+  }
+  return {t:t, s:s, total:total, periodDays:periodDays, byDay:byDay, byForm:byForm, usedPeriod:usedPeriod,
+    remaining:remaining, usedToday:usedToday, status:status, baseline:baseline, daysLeft:daysLeft,
+    suggested:suggested, startRemain:startRemain, tomorrow:tomorrow, daysElapsed:daysElapsed, avg:avg,
+    emptyDate:emptyDate, leftoverEnd:leftoverEnd};
+}
+
+/* ---------- słoik ---------- */
+function buildJar(){
+  var bumps = "";
+  var rs = [7, 9, 6.5, 8.5, 7.5, 9.5, 6.8, 8.2, 7.2, 9];
+  for (var i = 0; i < 10; i++){
+    var x = 14 + i * 10.3, y = 3 + ((i * 7) % 4);
+    bumps += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="' + rs[i] + '"/>';
+  }
+  $("#jar").innerHTML =
+    '<defs>' +
+      '<clipPath id="jarClip"><rect x="14.5" y="32.5" width="91" height="127" rx="16"/></clipPath>' +
+      '<pattern id="herb" width="15" height="15" patternUnits="userSpaceOnUse">' +
+        '<rect width="15" height="15" class="h0"/>' +
+        '<circle cx="3.5" cy="4" r="3.2" class="h1"/><circle cx="10.5" cy="9.5" r="3.6" class="h2"/>' +
+        '<circle cx="4.5" cy="12.5" r="2.2" class="h2"/><circle cx="12" cy="2.2" r="1.8" class="h1"/>' +
+        '<circle cx="7.3" cy="7.2" r=".75" class="h3"/><circle cx="13.2" cy="13.2" r=".6" class="h3"/><circle cx="1.6" cy="9" r=".55" class="h3"/>' +
+      '</pattern>' +
+    '</defs>' +
+    '<rect x="12" y="30" width="96" height="132" rx="18" class="jar-back"/>' +
+    '<g clip-path="url(#jarClip)"><g id="jarFill" class="jar-fill" style="transform:translateY(40px)">' +
+      '<g fill="url(#herb)"><rect x="8" y="0" width="104" height="180"/>' + bumps + '</g>' +
+    '</g></g>' +
+    '<rect x="12" y="30" width="96" height="132" rx="18" class="jar-glass"/>' +
+    '<rect x="19" y="44" width="6" height="96" rx="3" class="jar-shine"/>' +
+    '<rect x="25" y="22" width="70" height="10" rx="2" class="jar-neck"/>' +
+    '<rect x="20" y="5" width="80" height="19" rx="5" class="jar-lid"/>' +
+    '<path d="M27 11.5h66M27 17.5h66" class="jar-lid-line"/>' +
+    '<g class="jar-label"><rect x="34" y="96" width="52" height="38" rx="3"/>' +
+      '<text x="60" y="115" text-anchor="middle" class="lb-big" id="jarLabelBig">20 g</text>' +
+      '<text x="60" y="126" text-anchor="middle" class="lb-small" id="jarLabelSmall">—</text>' +
+    '</g>';
+}
+function setJar(frac, c){
+  frac = Math.max(0, Math.min(1, frac));
+  var top = frac <= 0.001 ? 175 : 159 - frac * 126;
+  var el = document.getElementById("jarFill");
+  if (el) el.style.transform = "translateY(" + top.toFixed(1) + "px)";
+  $("#jarLabelBig").textContent = (Math.round(c.total*100)/100).toString().replace(".", ",") + " g";
+  $("#jarLabelSmall").textContent = short(c.s.start) + "–" + short(c.s.end);
+  $("#jar").setAttribute("aria-label", "Słoik: zostało " + g(Math.max(0, c.remaining)) + " z " + g(c.total) + " g");
+}
+
+/* ---------- formularz dodawania ---------- */
+var draft = {amount: state.settings.defAmount, form: state.settings.defForm, date: null, time: null};
+function icon(id){ return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[id] || ICONS.inne) + '</svg>'; }
+function formName(id){ for (var i = 0; i < FORMS.length; i++) if (FORMS[i].id === id) return FORMS[i].name; return "Inne"; }
+
+function buildAdd(){
+  $("#presets").innerHTML = PRESETS.map(function(p){ return '<button class="preset" data-amt="' + p + '">' + g(p) + '</button>'; }).join("");
+  $("#forms").innerHTML = FORMS.map(function(f){ return '<button class="form-chip" data-form="' + f.id + '">' + icon(f.id) + f.name + '</button>'; }).join("");
+  $("#sDefForm").innerHTML = FORMS.map(function(f){ return '<option value="' + f.id + '">' + f.name + '</option>'; }).join("");
+}
+function renderAdd(){
+  var a = $("#amountIn");
+  if (document.activeElement !== a) a.value = g(draft.amount);
+  document.querySelectorAll(".preset").forEach(function(b){ b.setAttribute("aria-pressed", Math.abs(+b.dataset.amt - draft.amount) < 0.0005 ? "true" : "false"); });
+  document.querySelectorAll(".form-chip").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.form === draft.form ? "true" : "false"); });
+  var when = "Teraz";
+  if (draft.date && draft.date !== todayKey()) when = short(draft.date) + (draft.time ? ", " + draft.time : "");
+  else if (draft.time) when = "Dziś, " + draft.time;
+  $("#whenBtn").textContent = when;
+  $("#saveBtn").textContent = "Zapisz " + g(draft.amount) + " g · " + formName(draft.form);
+  $("#whenDate").max = todayKey();
+}
+function setAmount(v){
+  if (!isFinite(v)) return;
+  draft.amount = Math.min(10, Math.max(0.01, r3(v)));
+  renderAdd();
+}
+
+/* ---------- listy wpisów ---------- */
+function entriesFor(k){
+  return Object.keys(state.entries).map(function(id){ return state.entries[id]; })
+    .filter(function(e){ return e.date === k; })
+    .sort(function(a, b){ return a.time < b.time ? 1 : a.time > b.time ? -1 : (b.ts - a.ts); });
+}
+function listHTML(list, emptyText){
+  if (!list.length) return '<li style="border:0;display:block"><p class="empty">' + esc(emptyText) + '</p></li>';
+  return list.map(function(e){
+    return '<li>' + icon(e.form) +
+      '<span class="nm">' + esc(formName(e.form)) + '<span class="tm">' + esc(e.time) + '</span></span>' +
+      '<span class="am">' + g(e.amount) + ' g</span>' +
+      '<button class="del" data-del="' + esc(e.id) + '" aria-label="Usuń wpis ' + g(e.amount) + ' g o ' + esc(e.time) + '">×</button></li>';
+  }).join("");
+}
+
+/* ---------- render: Dziś ---------- */
+function renderToday(c){
+  $("#todayDate").textContent = cap(fmtLong.format(new Date()));
+  $("#periodPill").textContent = short(c.s.start) + " – " + short(c.s.end);
+  setJar(c.total > 0 ? c.remaining / c.total : 0, c);
+
+  $("#remain").textContent = g(Math.max(0, c.remaining));
+  var rs = "z " + g(c.total) + " g";
+  if (c.status === "during") rs += " · " + c.daysLeft + " " + dni(c.daysLeft) + " do końca";
+  if (c.remaining < -0.0005) rs = "Przekroczono przydział o " + g(-c.remaining) + " g";
+  $("#remainSub").textContent = rs;
+
+  var big = $("#todayBig"), fill = $("#meterFill");
+  if (c.status === "during"){
+    var left = c.suggested - c.usedToday;
+    if (left >= -0.0005){
+      $("#todayLabel").textContent = "Na dziś zostało";
+      $("#todayLeft").textContent = g(Math.max(0, left));
+      big.classList.remove("over");
+    } else {
+      $("#todayLabel").textContent = "Ponad dzisiejszą normę";
+      $("#todayLeft").textContent = "+" + g(-left);
+      big.classList.add("over");
+    }
+    var pct = c.suggested > 0 ? c.usedToday / c.suggested : (c.usedToday > 0 ? 1 : 0);
+    fill.style.width = Math.min(100, pct * 100).toFixed(1) + "%";
+    fill.classList.toggle("over", pct > 1.0005);
+    $("#todaySub").textContent = "wzięte " + g(c.usedToday) + " z " + g(c.suggested) + " g";
+    var f = '<span>Na dziś: <b>' + g(Math.max(0, c.startRemain)) + ' g ÷ ' + c.daysLeft + ' ' + dni(c.daysLeft) + ' = ' + g(c.suggested) + ' g</b></span>';
+    if (c.tomorrow !== null) f += '<span>Jutro przy obecnym stanie: ' + g(Math.max(0, c.remaining)) + ' g ÷ ' + (c.daysLeft - 1) + ' ' + dni(c.daysLeft - 1) + ' = ' + g(c.tomorrow) + ' g</span>';
+    else f += '<span>Ostatni dzień okresu.</span>';
+    $("#formula").innerHTML = f;
+  } else {
+    $("#todayLabel").textContent = "Wzięte dziś";
+    $("#todayLeft").textContent = g(c.usedToday);
+    big.classList.remove("over");
+    fill.style.width = "0%";
+    $("#todaySub").textContent = c.status === "before" ? "okres jeszcze się nie zaczął" : "okres się skończył";
+    $("#formula").innerHTML = '<span>Norma okresu: <b>' + g(c.total) + ' g ÷ ' + c.periodDays + ' ' + dni(c.periodDays) + ' = ' + g(c.baseline) + ' g</b></span>';
+  }
+
+  var sn = $("#setupNotice");
+  if (!c.s.setupSeen && c.status !== "after"){
+    sn.hidden = false;
+    $("#setupText").textContent = "Na start: " + g(c.total) + " g od " + short(c.s.start) + " do " + short(c.s.end) + ". Jeśli słoik dostałeś innego dnia albo na inny okres, zmień to w Przydziale.";
+  } else sn.hidden = true;
+
+  var pn = $("#periodNotice");
+  if (c.status === "after"){
+    pn.hidden = false;
+    $("#periodText").textContent = "Okres skończył się " + short(c.s.end) + ". Zostało " + g(Math.max(0, c.remaining)) + " g. Zacznij nowy słoik, żeby liczyć dzienną normę dalej.";
+  } else if (c.status === "before"){
+    pn.hidden = false;
+    $("#periodText").textContent = "Okres zaczyna się " + short(c.s.start) + ". Wpisy sprzed tej daty nie zmniejszają przydziału.";
+  } else pn.hidden = true;
+
+  var list = entriesFor(c.t);
+  $("#todayList").innerHTML = listHTML(list, "Dziś jeszcze nic. Pierwszy wpis pojawi się tutaj.");
+  $("#todaySum").textContent = list.length ? g(c.usedToday) + " g" : "";
+  renderAdd();
+}
+
+/* ---------- render: Kalendarz ---------- */
+var calY, calM, selDay = todayKey();
+(function(){ var d = new Date(); calY = d.getFullYear(); calM = d.getMonth(); })();
+function level(used, base){
+  if (!used) return "";
+  if (!base) return "l2";
+  var r = used / base;
+  if (r > 1.1) return "over";
+  if (r > 0.85) return "l3";
+  if (r > 0.45) return "l2";
+  return "l1";
+}
+function renderCal(c){
+  $("#calTitle").textContent = cap(fmtMonth.format(new Date(calY, calM, 1)));
+  var first = new Date(calY, calM, 1), offset = (first.getDay() + 6) % 7, dim = new Date(calY, calM + 1, 0).getDate();
+  var h = "";
+  for (var i = 0; i < offset; i++) h += '<span aria-hidden="true"></span>';
+  for (var d = 1; d <= dim; d++){
+    var k = keyOf(new Date(calY, calM, d));
+    var used = c.byDay[k] || 0;
+    var inP = k >= c.s.start && k <= c.s.end;
+    var cls = ["day", level(used, c.baseline)];
+    cls.push(inP ? "in" : "out");
+    if (k === c.t) cls.push("today");
+    if (k > c.t) cls.push("future");
+    h += '<button class="' + cls.join(" ") + '" data-day="' + k + '" aria-pressed="' + (k === selDay ? "true" : "false") + '" aria-label="' + esc(fmtLong.format(parseKey(k))) + (used ? ", " + g(used) + " g" : "") + '">' +
+      '<span class="n">' + d + '</span><span class="v">' + (used ? gt(used) : "") + '</span></button>';
+  }
+  $("#calGrid").innerHTML = h;
+  $("#legend").innerHTML =
+    '<span><i style="background:var(--l1)"></i>mało</span>' +
+    '<span><i style="background:var(--l3)"></i>w normie</span>' +
+    '<span><i style="background:var(--over)"></i>ponad normę</span>' +
+    '<span class="mono">norma ' + g(c.baseline) + ' g/dzień</span>';
+
+  var list = entriesFor(selDay), sum = c.byDay[selDay] || 0;
+  $("#ddTitle").textContent = fmtLong.format(parseKey(selDay));
+  $("#ddSum").textContent = g(sum) + " g";
+  var info;
+  var inPeriod = selDay >= c.s.start && selDay <= c.s.end;
+  if (selDay > c.t) info = "To jeszcze przed Tobą.";
+  else if (!inPeriod) info = "Poza obecnym okresem, nie wlicza się do przydziału.";
+  else if (selDay === c.t) info = "Norma na dziś: " + g(c.suggested) + " g.";
+  else {
+    var dlt = sum - c.baseline;
+    info = "Norma okresu " + g(c.baseline) + " g · " + (Math.abs(dlt) < 0.005 ? "dokładnie w normie" : dlt < 0 ? g(-dlt) + " g mniej" : g(dlt) + " g więcej");
+  }
+  $("#ddInfo").textContent = info;
+  $("#ddList").innerHTML = listHTML(list, selDay > c.t ? "Brak wpisów." : "Brak wpisów z tego dnia.");
+  $("#ddAdd").hidden = selDay > c.t;
+}
+
+/* ---------- render: Statystyki ---------- */
+function renderStats(c){
+  $("#statsPeriod").textContent = "Okres " + short(c.s.start) + " – " + short(c.s.end);
+  $("#kUsed").innerHTML = g(c.usedPeriod) + '<small> g</small>';
+  $("#kUsedSub").textContent = "z " + g(c.total) + " g · " + (c.total ? Math.round(c.usedPeriod / c.total * 100) : 0) + "%";
+  $("#kAvg").innerHTML = g(c.avg) + '<small> g</small>';
+  $("#kAvgSub").textContent = c.daysElapsed ? "z " + c.daysElapsed + " " + dni(c.daysElapsed) + " okresu" : "okres jeszcze nie ruszył";
+  $("#kBase").innerHTML = g(c.baseline) + '<small> g</small>';
+  $("#kBaseSub").textContent = g(c.total) + " g ÷ " + c.periodDays + " " + dni(c.periodDays);
+
+  var until = "—", untilSub = "", fc = "";
+  if (c.status === "during"){
+    if (c.remaining <= 0.0005){ until = "pusto"; untilSub = "przydział wykorzystany"; fc = "Przydział na ten okres się skończył. Do " + short(c.s.end) + " zostało " + c.daysLeft + " " + dni(c.daysLeft) + "."; }
+    else if (!c.avg){ until = short(c.s.end); untilSub = "jeszcze bez wpisów"; fc = "Dodaj pierwszy wpis, a policzę, na jak długo starczy przy Twoim tempie."; }
+    else if (c.emptyDate >= c.s.end){
+      until = short(c.s.end); untilSub = "do końca okresu";
+      fc = "Przy obecnym tempie (" + g(c.avg) + " g dziennie) starczy do końca okresu i zostanie około " + g(Math.max(0, c.leftoverEnd)) + " g.";
+    } else {
+      var short_by = diff(c.s.end, c.emptyDate);
+      until = short(c.emptyDate); untilSub = short_by + " " + dni(short_by) + " przed końcem";
+      fc = "Przy obecnym tempie (" + g(c.avg) + " g dziennie) słoik skończy się " + short(c.emptyDate) + ". Żeby starczyło do " + short(c.s.end) + ", trzymaj się " + g(c.suggested) + " g dziennie.";
+    }
+  } else if (c.status === "after"){
+    until = short(c.s.end); untilSub = "okres zakończony";
+    fc = "Okres zakończony. Zużyłeś " + g(c.usedPeriod) + " z " + g(c.total) + " g, średnio " + g(c.avg) + " g dziennie.";
+  } else {
+    until = short(c.s.end); untilSub = "start " + short(c.s.start);
+    fc = "Okres zaczyna się " + short(c.s.start) + ".";
+  }
+  $("#kUntil").textContent = until; $("#kUntilSub").textContent = untilSub;
+  $("#forecast").textContent = fc;
+
+  // wykres 14 dni
+  var days = [];
+  for (var i = 13; i >= 0; i--) days.push(addDays(c.t, -i));
+  var vals = days.map(function(k){ return c.byDay[k] || 0; });
+  var base = c.baseline;
+  var max = Math.max.apply(null, vals.concat([base * 1.5, 0.2]));
+  max = Math.ceil(max * 10) / 10;
+  var W = 340, H = 160, pl = 4, pr = 4, pt = 16, pb = 22, ch = H - pt - pb, slot = (W - pl - pr) / 14, bw = slot * 0.6;
+  var y = function(v){ return pt + ch * (1 - v / max); };
+  var s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Zużycie w ostatnich 14 dniach">';
+  s += '<line class="grid-l" x1="0" x2="' + W + '" y1="' + (pt + ch) + '" y2="' + (pt + ch) + '"/>';
+  vals.forEach(function(v, i){
+    var x = pl + slot * i + (slot - bw) / 2;
+    var cls = v === 0 ? "bar zero" : (base && v > base * 1.1 ? "bar over" : "bar");
+    var hgt = v === 0 ? 2 : Math.max(2, ch * v / max);
+    s += '<rect class="' + cls + '" x="' + x.toFixed(1) + '" y="' + (pt + ch - hgt).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + hgt.toFixed(1) + '" rx="3"/>';
+    if (v > 0) s += '<text class="t-val" x="' + (x + bw / 2).toFixed(1) + '" y="' + (pt + ch - hgt - 4).toFixed(1) + '" text-anchor="middle">' + gt(v) + '</text>';
+    var dn = +days[i].slice(8);
+    s += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle"' + (days[i] === c.t ? ' class="t-today"' : '') + '>' + dn + '</text>';
+  });
+  if (base > 0){
+    var by = y(base).toFixed(1);
+    s += '<line class="base" x1="0" x2="' + W + '" y1="' + by + '" y2="' + by + '"/>';
+    s += '<text class="t-base" x="2" y="' + (+by - 4) + '">norma ' + g(base) + '</text>';
+  }
+  s += '</svg>';
+  $("#chart14").innerHTML = s;
+
+  // formy
+  var fs = FORMS.map(function(f){ return {f:f, v:c.byForm[f.id] || 0}; }).filter(function(x){ return x.v > 0; }).sort(function(a, b){ return b.v - a.v; });
+  if (!fs.length){ $("#byForm").innerHTML = '<p class="empty">Brak wpisów w tym okresie.</p>'; }
+  else {
+    var top = fs[0].v;
+    $("#byForm").innerHTML = fs.map(function(x){
+      var pct = c.usedPeriod ? Math.round(x.v / c.usedPeriod * 100) : 0;
+      return '<div class="fs-row">' + icon(x.f.id) + '<span class="nm">' + x.f.name + '</span>' +
+        '<div class="fs-bar"><span style="width:' + (x.v / top * 100).toFixed(1) + '%"></span></div>' +
+        '<span class="am">' + g(x.v) + ' g · ' + pct + '%</span></div>';
+    }).join("");
+  }
+}
+
+/* ---------- render: Przydział ---------- */
+function setVal(sel, v){ var el = $(sel); if (document.activeElement === el) return; if (String(el.value) !== String(v)) el.value = v; }
+function numStr(v){ return String(Math.round(v * 1000) / 1000).replace(".", ","); }
+function renderSettings(c){
+  setVal("#sTotal", numStr(c.s.total));
+  setVal("#sStart", c.s.start);
+  setVal("#sEnd", c.s.end);
+  setVal("#sDefAmount", numStr(c.s.defAmount));
+  setVal("#sDefForm", c.s.defForm);
+  $("#sInfo").textContent = c.periodDays + " " + dni(c.periodDays) + " · norma " + g(c.total) + " g ÷ " + c.periodDays + " = " + g(c.baseline) + " g/dzień";
+  $("#nCarryLabel").textContent = "Dolicz resztę ze starego słoika (" + g(Math.max(0, c.remaining)) + " g)";
+  var cloud = S.mode === "cloud";
+  $("#storeDot").classList.toggle("cloud", cloud);
+  $("#storeText").textContent = cloud
+    ? "Zapis prywatnie na Twoim koncie Claude. Widzisz go na każdym urządzeniu, na którym otworzysz tę stronę."
+    : "Zapis tylko w tej przeglądarce na tym telefonie. Zrób kopię, zanim wyczyścisz dane Safari.";
+}
+
+function render(){
+  var c = calc();
+  renderToday(c); renderCal(c); renderStats(c); renderSettings(c);
+}
+
+/* ---------- toast ---------- */
+var toastTimer = null;
+function hideToast(){ var t = $("#toast"); t.classList.remove("show"); setTimeout(function(){ if (!t.classList.contains("show")) t.hidden = true; }, 220); }
+function toast(msg, undo){
+  var t = $("#toast"), b = $("#toastUndo");
+  $("#toastMsg").textContent = msg;
+  b.hidden = !undo;
+  b.onclick = undo ? function(){ undo(); hideToast(); } : null;
+  t.hidden = false;
+  requestAnimationFrame(function(){ t.classList.add("show"); });
+  clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, 5000);
+}
+
+/* ---------- nawigacja ---------- */
+function show(tab){
+  ["today", "cal", "stats", "jar"].forEach(function(id){ $("#view-" + id).hidden = id !== tab; });
+  document.querySelectorAll(".tab").forEach(function(b){ if (b.dataset.tab === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- zdarzenia ---------- */
+document.addEventListener("click", function(ev){
+  var t = ev.target.closest("button"); if (!t) return;
+  if (t.dataset.tab){ show(t.dataset.tab); return; }
+  if (t.dataset.go){ show(t.dataset.go); return; }
+  if (t.dataset.amt){ setAmount(+t.dataset.amt); return; }
+  if (t.dataset.form){ draft.form = t.dataset.form; renderAdd(); return; }
+  if (t.dataset.day){ selDay = t.dataset.day; render(); return; }
+  if (t.dataset.del){
+    var e = removeEntry(t.dataset.del);
+    if (e) toast("Usunięto " + g(e.amount) + " g · " + formName(e.form), function(){ addEntry(e); });
+    return;
+  }
+});
+$("#minus").addEventListener("click", function(){ setAmount(Math.max(STEP, Math.round((draft.amount - STEP) * 100) / 100)); });
+$("#plus").addEventListener("click", function(){ setAmount(Math.round((draft.amount + STEP) * 100) / 100); });
+$("#amountIn").addEventListener("change", function(){ var v = parseNum(this.value); if (isFinite(v) && v > 0) setAmount(v); else renderAdd(); });
+$("#amountIn").addEventListener("focus", function(){ this.select(); });
+$("#amountIn").addEventListener("keydown", function(ev){ if (ev.key === "Enter") this.blur(); });
+
+$("#whenBtn").addEventListener("click", function(){
+  var ed = $("#whenEdit"), open = ed.hidden;
+  ed.hidden = !open; this.setAttribute("aria-expanded", open ? "true" : "false");
+  if (open){ $("#whenDate").value = draft.date || todayKey(); $("#whenTime").value = draft.time || nowHM(); }
+});
+$("#whenDate").addEventListener("change", function(){
+  var v = this.value;
+  if (!isKey(v)){ draft.date = null; }
+  else draft.date = v > todayKey() ? todayKey() : v;
+  if (!draft.time) draft.time = $("#whenTime").value || nowHM();
+  renderAdd();
+});
+$("#whenTime").addEventListener("change", function(){ draft.time = /^\d{2}:\d{2}$/.test(this.value) ? this.value : null; if (!draft.date) draft.date = todayKey(); renderAdd(); });
+$("#whenNow").addEventListener("click", function(){ draft.date = null; draft.time = null; $("#whenEdit").hidden = true; $("#whenBtn").setAttribute("aria-expanded", "false"); renderAdd(); });
+
+$("#saveBtn").addEventListener("click", function(){
+  var amt = draft.amount;
+  if (!(amt > 0)) return;
+  var date = draft.date || todayKey();
+  var time = draft.time || nowHM();
+  var e = {id:newId(), date:date, time:time, amount:r3(amt), form:draft.form, ts:Date.now()};
+  addEntry(e);
+  draft.date = null; draft.time = null;
+  $("#whenEdit").hidden = true; $("#whenBtn").setAttribute("aria-expanded", "false");
+  renderAdd();
+  toast("Zapisano " + g(e.amount) + " g · " + formName(e.form) + (date !== todayKey() ? " · " + short(date) : ""), function(){ removeEntry(e.id); });
+});
+
+$("#setupOk").addEventListener("click", function(){ state.settings.setupSeen = true; saveSettings(); });
+
+$("#calPrev").addEventListener("click", function(){ calM--; if (calM < 0){ calM = 11; calY--; } render(); });
+$("#calNext").addEventListener("click", function(){ calM++; if (calM > 11){ calM = 0; calY++; } render(); });
+$("#ddAdd").addEventListener("click", function(){
+  draft.date = selDay; draft.time = selDay === todayKey() ? null : (draft.time || "20:00");
+  show("today");
+  var ed = $("#whenEdit"); ed.hidden = false; $("#whenBtn").setAttribute("aria-expanded", "true");
+  $("#whenDate").value = selDay; $("#whenTime").value = draft.time || nowHM();
+  renderAdd();
+  $("#addCard").scrollIntoView({block:"start", behavior:"smooth"});
+});
+
+$("#sTotal").addEventListener("change", function(){ var v = parseNum(this.value); if (isFinite(v) && v >= 0){ state.settings.total = r3(v); state.settings.setupSeen = true; saveSettings(); } else render(); });
+$("#sStart").addEventListener("change", function(){ if (isKey(this.value)){ state.settings.start = this.value; if (state.settings.end < this.value) state.settings.end = monthEnd(this.value); state.settings.setupSeen = true; saveSettings(); } });
+$("#sEnd").addEventListener("change", function(){ if (isKey(this.value)){ state.settings.end = this.value < state.settings.start ? state.settings.start : this.value; state.settings.setupSeen = true; saveSettings(); } });
+$("#sDefAmount").addEventListener("change", function(){ var v = parseNum(this.value); if (isFinite(v) && v > 0){ state.settings.defAmount = r3(v); draft.amount = state.settings.defAmount; saveSettings(); } else render(); });
+$("#sDefForm").addEventListener("change", function(){ state.settings.defForm = this.value; draft.form = this.value; saveSettings(); });
+
+var newJarArmed = null;
+$("#newJarBtn").addEventListener("click", function(){
+  var btn = this;
+  var v = parseNum($("#nTotal").value);
+  if (!(isFinite(v) && v > 0)){ toast("Wpisz, ile gramów dostałeś, np. 20."); return; }
+  if (!newJarArmed){
+    btn.classList.add("confirm"); btn.textContent = "Dotknij jeszcze raz, żeby zacząć od dziś";
+    newJarArmed = setTimeout(function(){ newJarArmed = null; btn.classList.remove("confirm"); btn.textContent = "Zacznij nowy słoik"; }, 3500);
+    return;
+  }
+  clearTimeout(newJarArmed); newJarArmed = null;
+  btn.classList.remove("confirm"); btn.textContent = "Zacznij nowy słoik";
+  var c = calc();
+  var carry = $("#nCarry").checked ? Math.max(0, c.remaining) : 0;
+  var t = todayKey();
+  state.settings.total = r3(v + carry);
+  state.settings.start = t;
+  state.settings.end = monthEnd(t);
+  state.settings.setupSeen = true;
+  $("#nCarry").checked = false;
+  saveSettings();
+  toast("Nowy słoik: " + g(state.settings.total) + " g do " + short(state.settings.end));
+});
+
+function exportText(){
+  var list = Object.keys(state.entries).map(function(k){ return state.entries[k]; }).sort(function(a, b){ return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.time < b.time ? -1 : 1); });
+  return JSON.stringify({app:"dziennik-sloika", v:1, settings:state.settings, entries:list});
+}
+$("#exportBtn").addEventListener("click", function(){
+  var txt = exportText(), ta = $("#ioText");
+  function fallback(){
+    ta.hidden = false; ta.value = txt; ta.focus(); ta.select();
+    $("#importToggle").setAttribute("aria-expanded", "true");
+    toast("Zaznaczyłem kopię poniżej. Skopiuj ją i zapisz np. w Notatkach.");
+  }
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ toast("Skopiowano " + Object.keys(state.entries).length + " wpisów. Wklej je np. do Notatek."); }, fallback);
+    } else fallback();
+  } catch(err){ fallback(); }
+});
+$("#importToggle").addEventListener("click", function(){
+  var ta = $("#ioText"), open = ta.hidden;
+  ta.hidden = !open; $("#importBtn").hidden = !open; this.setAttribute("aria-expanded", open ? "true" : "false");
+  if (open){ ta.value = ""; ta.placeholder = "Wklej tu skopiowaną wcześniej kopię"; ta.focus(); }
+});
+$("#importBtn").addEventListener("click", function(){
+  var o;
+  try { o = JSON.parse($("#ioText").value); } catch(err){ toast("To nie wygląda na kopię z tej aplikacji. Wklej cały skopiowany tekst."); return; }
+  if (!o || !o.settings || !Array.isArray(o.entries)){ toast("W tej kopii brakuje ustawień albo wpisów."); return; }
+  var fresh = [];
+  o.entries.forEach(function(raw){
+    var e = cleanEntry(raw, raw && raw.id ? raw.id : newId());
+    if (!e || !/^[A-Za-z0-9_.~:@+-]{1,120}$/.test(e.id) || state.entries[e.id]) return;
+    state.entries[e.id] = e; fresh.push(e);
+  });
+  var added = fresh.length;
+  if (S.mode === "cloud" && fresh.length){
+    var chain = Promise.resolve();
+    fresh.forEach(function(e){ chain = chain.then(function(){ return S.entriesCol.doc(e.id).set(e); }); });
+    chain.catch(function(){ toast("Część wpisów nie zapisała się na koncie. Zostały w tej przeglądarce."); });
+  }
+  state.settings = cleanSettings(o.settings, state.settings);
+  state.settings.setupSeen = true;
+  saveSettings();
+  $("#ioText").hidden = true; $("#importBtn").hidden = true; $("#importToggle").setAttribute("aria-expanded", "false");
+  toast("Wczytano. Nowych wpisów: " + added + ".");
+});
+
+/* ---------- start ---------- */
+buildJar();
+buildAdd();
+render();
+initCloud();
+var lastDay = todayKey();
+function dayCheck(){ var t = todayKey(); if (t !== lastDay){ lastDay = t; render(); } }
+setInterval(dayCheck, 60000);
+document.addEventListener("visibilitychange", function(){ if (!document.hidden) dayCheck(); });
+})();
+</script>
+
+</body>
+</html>
